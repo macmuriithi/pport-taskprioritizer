@@ -1,0 +1,17 @@
+{
+    "name": "pport/taskprioritizer",
+    "description": "Pport TaskPrioritizer is a PHP class that prioritizes a list of tasks based on their dependencies and difficulty using a directed acyclic graph (DAG) and topological sort.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Pport\\TaskPrioritizer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Martin Muriithi",
+            "email": "macmuriithi@gmail.com"
+        }
+    ],
+    "require": {}
+}
