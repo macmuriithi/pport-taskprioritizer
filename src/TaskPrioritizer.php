@@ -22,54 +22,40 @@ class TaskPrioritizer
 
         $taskOrder = array(); // The order in which to perform the tasks
         $visited = array(); // The tasks that have been visited
-        $taskQueue = array(); // The tasks that are ready to be processed
+        $taskQueue = new \SplPriorityQueue(); // The tasks that are ready to be processed
 
-        // Find source nodes (tasks with no dependencies) and add them to the queue
+        // Add all tasks to the queue
         foreach ($this->tasks as $task) {
-            if (!isset($this->dependencies[$task])) {
-                $taskQueue[] = $task;
-                $visited[$task] = true;
-            }
+            $taskQueue->insert($task, $this->difficulty[$task]);
         }
 
         // Perform a topological sort
-        while (!empty($taskQueue)) {
-            // Find the task with the lowest difficulty in the queue
-            $minDifficulty = INF;
-            $minTask = null;
-            foreach ($taskQueue as $task) {
-                if ($this->difficulty[$task] < $minDifficulty) {
-                    $minDifficulty = $this->difficulty[$task];
-                    $minTask = $task;
-                }
-            }
+        while (!$taskQueue->isEmpty()) {
+            // Get the task with the highest priority
+            $task = $taskQueue->extract();
 
             // Add the task to the task order
-            $task = $minTask;
             $taskOrder[] = $task;
 
             // Add any dependent tasks to the queue if they are ready to be processed
             if (isset($this->dependencies[$task])) {
                 foreach ($this->dependencies[$task] as $dependentTask) {
-                    if (!isset($visited[$dependentTask])) {
-                        $isReady = true;
-                        foreach ($this->tasks as $task) {
-                            if (isset($this->dependencies[$task]) && in_array($dependentTask, $this->dependencies[$task])) {
-                                $isReady = false;
-                                break;
-                            }
+                    $isReady = true;
+                    foreach ($this->tasks as $task) {
+                        if (isset($this->dependencies[$task]) && in_array($dependentTask, $this->dependencies[$task])) {
+                            $isReady = false;
+                            break;
                         }
+                    }
 
-                        if ($isReady) {
-                            $taskQueue[] = $dependentTask;
-                            $visited[$dependentTask] = true;
-                        }
+                    if ($isReady && !isset($visited[$dependentTask])) {
+                        $taskQueue->insert($dependentTask, $this->difficulty[$dependentTask]);
                     }
                 }
             }
 
-            // Remove the processed task from the queue
-            $taskQueue = array_diff($taskQueue, array($task));
+            // Mark the task as visited
+            $visited[$task] = true;
         }
 
         return $taskOrder;

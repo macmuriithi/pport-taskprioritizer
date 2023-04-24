@@ -5,7 +5,10 @@ TaskPrioritizer is a PHP class that prioritizes a list of tasks based on their d
 ## Installation
 
 The `TaskPrioritizer` class can be installed using Composer:
+
+```
 composer require pport/task-prioritizer
+```
 
 Alternatively, you can clone this repository or download the `TaskPrioritizer.php` file and include it in your project.
 
@@ -15,26 +18,28 @@ To use the `TaskPrioritizer` class, create an instance of the class and pass in 
 
 ```php
 // Define the tasks, dependencies, and difficulties
+
 $tasks = array('A', 'B', 'C', 'D', 'E', 'F');
 $dependencies = array(
-  'A' => array('B', 'C'),
-  'D' => array('B', 'E'),
-  'E' => array('C', 'F'),
+    'A' => array('B', 'C'),
+    'D' => array('B', 'E'),
+    'E' => array('C', 'F'),
 );
 $difficulty = array(
-  'A' => 3,
-  'B' => 1,
-  'C' => 2,
-  'D' => 4,
-  'E' => 2,
-  'F' => 1,
+    'A' => 3,
+    'B' => 1,
+    'C' => 2,
+    'D' => 4,
+    'E' => 2,
+    'F' => 1,
 );
 
+
 // Create a new TaskPrioritizer instance
-$taskPrioritizer = new TaskPrioritizer($tasks, $dependencies, $difficulty);
+$prioritizer = new Pport\Agi\TaskPrioritizer($tasks, $dependencies, $difficulty);
 
 // Prioritize the tasks using the TaskPrioritizer instance
-$taskOrder = $taskPrioritizer->prioritizeTasks();
+$taskOrder = $prioritizer->prioritizeTasks();
 
 // Output the prioritized task order
 echo "Task order: " . implode(', ', $taskOrder);
@@ -44,19 +49,9 @@ echo "Task order: " . implode(', ', $taskOrder);
 
 This will output:
 
-Task order: B, C, A, F, E, D
+Task order: B -> C -> A -> E -> D -> F
 
-```
-      Task A (2)   Task E (2)
-        /   \         |
-       /     \        |
-   Task B (3)  Task C (1)
-            \      |
-             \     |
-             Task D (4)
-```
-
-This indicates that the tasks should be performed in the order of B, C, A, F, E, D, with B being the first task to be performed because it has no dependencies and has the lowest difficulty. The other tasks are performed in order of increasing difficulty, while respecting their dependencies in the directed acyclic graph.
+This indicates that the tasks should be performed in the order of B, C, A, E, D, F with B being the first task to be performed because it has no dependencies and has the lowest difficulty. The other tasks are performed in order of increasing difficulty, while respecting their dependencies in the directed acyclic graph.
 
 ## Contributing
 
