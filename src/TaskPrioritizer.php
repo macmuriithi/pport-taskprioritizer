@@ -1,4 +1,7 @@
 <?php
+
+namespace Pport\Agi;
+
 class TaskPrioritizer
 {
     private $tasks;

@@ -46,6 +46,16 @@ This will output:
 
 Task order: B, C, A, F, E, D
 
+```
+      Task A (2)   Task E (2)
+        /   \         |
+       /     \        |
+   Task B (3)  Task C (1)
+            \      |
+             \     |
+             Task D (4)
+```
+
 This indicates that the tasks should be performed in the order of B, C, A, F, E, D, with B being the first task to be performed because it has no dependencies and has the lowest difficulty. The other tasks are performed in order of increasing difficulty, while respecting their dependencies in the directed acyclic graph.
 
 ## Contributing
