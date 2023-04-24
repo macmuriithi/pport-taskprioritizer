@@ -2,6 +2,16 @@
 
 TaskPrioritizer is a PHP class that prioritizes a list of tasks based on their dependencies and difficulty using a directed acyclic graph (DAG) and topological sort.
 
+```
+  A(3)
+ / \
+B(1) C(2)
+ \ / \
+D(4) E(2)
+       \
+        F(1)
+```
+
 ## Installation
 
 The `TaskPrioritizer` class can be installed using Composer:
